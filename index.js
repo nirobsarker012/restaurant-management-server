@@ -30,9 +30,16 @@ async function run() {
     const myOrderCollection = client.db("restaurantBD").collection("myOrders");
     //get Data
     app.get("/all-foods", async (req, res) => {
-      const foods = req.body;
+
+      try{
+     const foods = req.body;
       const result = await foodCollections.find(foods).toArray();
       res.send(result);
+      }
+        catch (error) {
+        console.error("Error finding food:", error);
+        res.status(500).send({ error });
+      }
     });
 
     // Add foods data
