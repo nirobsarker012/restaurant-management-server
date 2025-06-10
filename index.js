@@ -32,8 +32,7 @@ async function run() {
     app.get("/all-foods", async (req, res) => {
 
       try{
-     const foods = req.body;
-      const result = await foodCollections.find(foods).toArray();
+      const result = await foodCollections.find().toArray();
       res.send(result);
       }
         catch (error) {
