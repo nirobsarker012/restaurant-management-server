@@ -24,19 +24,19 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
 
     //generate jwt
-    app.post("/jwt", (req, res) => {
-      const user = { email: req.body.email };
-      console.log(`Data Token Generate`, user);
-      // Create Token
-      const token = jwt.sign(user, process.env.JWT_SECRET_KEY, 
-        {
-          expiresIn:'80d',
-        }
-      ); 
-      res.send({token: token, message : 'jwt created Successfully'})
-    });
+    // app.post("/jwt", (req, res) => {
+    //   const user = { email: req.body.email };
+    //   console.log(`Data Token Generate`, user);
+    //   // Create Token
+    //   const token = jwt.sign(user, process.env.JWT_SECRET_KEY, 
+    //     {
+    //       expiresIn:'80d',
+    //     }
+    //   ); 
+    //   res.send({token: token, message : 'jwt created Successfully'})
+    // });
 
-    await client.connect();
+    // await client.connect();
     //Added resturant json data
     const foodCollections = client.db("restaurantBD").collection("foodItems");
     const authFoodCollections = client
@@ -49,7 +49,7 @@ async function run() {
         const result = await foodCollections.find().toArray();
         res.send(result);
       } catch (error) {
-        console.error("Error finding food:", error);
+        // console.error("Error finding food:", error);
         res.status(500).send({ error });
       }
     });
@@ -63,7 +63,7 @@ async function run() {
           .status(201)
           .send({ ...result, message: "Data inserted successfully" });
       } catch (error) {
-        console.error("Error inserting food:", error);
+        // console.error("Error inserting food:", error);
         res.status(500).send({ error: "Failed to insert food data" });
       }
     });
@@ -84,7 +84,7 @@ async function run() {
       const food = await authFoodCollections.findOne({
         _id: new ObjectId(id),
       });
-      console.log(food);
+      // console.log(food);
       res.send(food);
     });
 
@@ -113,7 +113,7 @@ async function run() {
           .status(201)
           .send({ ...result, message: "Data Insert Successfully" });
       } catch (error) {
-        console.error("Error inserting food:", error);
+        // console.error("Error inserting food:", error);
         res.status(500).send({ error: "Failed to insert food data" });
       }
     });
@@ -137,10 +137,10 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
