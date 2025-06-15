@@ -5,7 +5,11 @@ require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(cors());
+app.use(cors(
+  {
+    origin:["http://localhost:3000/","https://ns-restaurant-management.netlify.app"]
+  }
+));
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASS}@cluster0.jea08bc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -149,7 +153,12 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Restaurant Data is running");
+  res.send(
+    {
+      activeStatus : true,
+      error: false,
+    }
+  );
 });
 
 app.listen(port, () => {
