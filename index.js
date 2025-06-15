@@ -153,12 +153,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send(
-    {
-      activeStatus : true,
-      error: false,
-    }
-  );
+  res.send('Data Run Successfully');
 });
 
 app.listen(port, () => {
