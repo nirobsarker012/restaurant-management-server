@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
@@ -21,6 +22,20 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
+
+    //generate jwt
+    app.post("/jwt", (req, res) => {
+      const user = { email: req.body.email };
+      console.log(`Data Token Generate`, user);
+      // Create Token
+      const token = jwt.sign(user, process.env.JWT_SECRET_KEY, 
+        {
+          expiresIn:'80d',
+        }
+      ); 
+      res.send({token: token, message : 'jwt created Successfully'})
+    });
+
     await client.connect();
     //Added resturant json data
     const foodCollections = client.db("restaurantBD").collection("foodItems");
@@ -30,12 +45,10 @@ async function run() {
     const myOrderCollection = client.db("restaurantBD").collection("myOrders");
     //get Data
     app.get("/all-foods", async (req, res) => {
-
-      try{
-      const result = await foodCollections.find().toArray();
-      res.send(result);
-      }
-        catch (error) {
+      try {
+        const result = await foodCollections.find().toArray();
+        res.send(result);
+      } catch (error) {
         console.error("Error finding food:", error);
         res.status(500).send({ error });
       }
